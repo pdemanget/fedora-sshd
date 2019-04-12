@@ -1,21 +1,16 @@
-FROM       ubuntu:14.04
-MAINTAINER Aleksandar Diklic "https://github.com/rastasheep"
+FROM fedora:27
 
-RUN apt-get update
+MAINTAINER Philippe DEMANGET "https://github.com/pdemanget"
 
-RUN apt-get install -y openssh-server
-RUN mkdir /var/run/sshd
 
-RUN echo 'root:root' |chpasswd
-
-RUN sed -ri 's/^#?PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config
-RUN sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config
-
-RUN mkdir /root/.ssh
-
-RUN apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
+# Install packages.
+RUN \
+  dnf -y install openssh-server && \
+  /usr/bin/ssh-keygen -A && \
+  ln -s /usr/bin/python3 /usr/bin/python
+  # var/cache/dnf?
+  
 EXPOSE 22
 
-CMD    ["/usr/sbin/sshd", "-D"]
+# Set the default command.
+CMD ["/usr/sbin/sshd", "-D"]

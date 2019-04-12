@@ -17,7 +17,7 @@ Docker hub help
 ---------------
 To run image:
 
- $  docker run --rm -i -p 1022:22 -v ~/.ssh/id_rsa.pub:/root/.ssh/authorized_keys fedora-sshd 
+   $  docker run --rm -p 1022:22 -v ~/.ssh/id_rsa.pub:/root/.ssh/authorized_keys pdemanget/fedora-sshd:29
 
 
 docker-compose.yml: 
@@ -37,13 +37,17 @@ to login
 
 NO password should be needed if you have binded the authorized keys to your ad_rsa.pub
 
+python is also available so that we can use ansible.
+
 
 build info
 ----------
+./generate.sh
+cd 28
 docker build . -t fedora-sshd
-docker tag 766eee1b0728 pdemanget/fedora-sshd:28
+docker tag fedora-sshd pdemanget/fedora-sshd:28
 docker login --username=pdemanget 
-docker push pdemanget/fedora-sshd
+docker push pdemanget/fedora-sshd:28
 
 
 
