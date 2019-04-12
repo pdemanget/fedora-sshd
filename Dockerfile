@@ -1,4 +1,4 @@
-FROM fedora:28
+FROM fedora:29
 
 MAINTAINER Philippe DEMANGET "https://github.com/pdemanget"
 
