@@ -1,22 +1,16 @@
-#
-# Fedora docker image with OpenSSH client
-#
-#
+FROM fedora:27
 
-FROM fedora:28
+MAINTAINER Philippe DEMANGET "https://github.com/pdemanget"
 
-MAINTAINER Philippe DEMANGET <pdemanget@gmail.com>
-
-# Set environment variables.
-# ENV \
-#  TERM=xterm-color
 
 # Install packages.
 RUN \
   dnf -y install openssh-server && \
   /usr/bin/ssh-keygen -A && \
-  ln -s /usr/bin/python3 /usr/bin/python
-  # var/cache/dnf?
+  ln -s /usr/bin/python3 /usr/bin/python && \
+  rm -rf /var/cache/dnf
+  
+  #dnf clean all --enablerepo=\*
   
 EXPOSE 22
 
