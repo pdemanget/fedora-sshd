@@ -1,66 +1,59 @@
-# ubuntu-sshd
+fedora-sshd
+===========
 
-Dockerized SSH service, built on top of [official Ubuntu](https://registry.hub.docker.com/_/ubuntu/) images.
+Dockerized SSH service, built on top of [official Fedora](https://registry.hub.docker.com/_/ubuntu/) images.
+forked from [rastasheep/ubuntu-sshd](https://github.com/rastasheep/ubuntu-sshd) 
 
-## Image tags
+Image tags
+----------
 
-- rastasheep/ubuntu-sshd:12.04 (precise)
-- rastasheep/ubuntu-sshd:12.10 (quantal)
-- rastasheep/ubuntu-sshd:13.04 (raring)
-- rastasheep/ubuntu-sshd:13.10 (saucy)
-- rastasheep/ubuntu-sshd:14.04 (trusty)
-- rastasheep/ubuntu-sshd:16.04 (xenial)
-- rastasheep/ubuntu-sshd:18.04 (bionic)
+- pdemanget/fedora-sshd:25
+- pdemanget/fedora-sshd:26
+- pdemanget/fedora-sshd:27
+- pdemanget/fedora-sshd:28
+- pdemanget/fedora-sshd:29
 
-## Installed packages
+Docker hub help
+---------------
+To run image:
 
-Base:
+ $  docker run --rm -i -p 1022:22 -v ~/.ssh/id_rsa.pub:/root/.ssh/authorized_keys fedora-sshd 
 
-- [Precise (12.04) minimal](http://packages.ubuntu.com/precise/ubuntu-minimal)
-- [Quantal (12.10) minimal](http://packages.ubuntu.com/quantal/ubuntu-minimal)
-- [Raring (13.04) minimal](http://packages.ubuntu.com/raring/ubuntu-minimal)
-- [Saucy (13.10) minimal](http://packages.ubuntu.com/saucy/ubuntu-minimal)
-- [Trusty (14.04) minimal](http://packages.ubuntu.com/trusty/ubuntu-minimal)
-- [Xenial (16.04) minimal](http://packages.ubuntu.com/xenial/ubuntu-minimal)
-- [Bionic (18.04) minimal](http://packages.ubuntu.com/bionic/ubuntu-minimal)
 
-Image specific:
-- [openssh-server](https://help.ubuntu.com/community/SSH/OpenSSH/Configuring)
+docker-compose.yml: 
+
+    version: '3'
+    services:
+        ssh-host:
+          image: pdemanget/fedora-sshd:29
+          ports:
+            - "10322:22"
+          volumes:
+            - "~/.ssh/id_rsa.pub:/root/.ssh/authorized_keys"
+            
+to login
+
+    ssh root@127.0.0.1 -p 10322
+
+NO password should be needed if you have binded the authorized keys to your ad_rsa.pub
+
+
+build info
+----------
+docker build . -t fedora-sshd
+docker tag 766eee1b0728 pdemanget/fedora-sshd:28
+docker login --username=pdemanget 
+docker push pdemanget/fedora-sshd
+
+
 
 Config:
-
-  - `PermitRootLogin yes`
-  - `UsePAM no`
   - exposed port 22
   - default command: `/usr/sbin/sshd -D`
-  - root password: `root`
 
-## Run example
 
-```bash
-$ sudo docker run -d -P --name test_sshd rastasheep/ubuntu-sshd:14.04
-$ sudo docker port test_sshd 22
-  0.0.0.0:49154
+Issues
+------
 
-$ ssh root@localhost -p 49154
-# The password is `root`
-root@test_sshd $
-```
-
-## Security
-
-If you are making the container accessible from the internet you'll probably want to secure it bit.
-You can do one of the following two things after launching the container:
-
-- Change the root password: `docker exec -ti test_sshd passwd`
-- Don't allow passwords at all, use keys instead:
-
-```bash
-$ docker exec test_sshd passwd -d root
-$ docker cp file_on_host_with_allowed_public_keys test_sshd:/root/.ssh/authorized_keys
-$ docker exec test_sshd chown root:root /root/.ssh/authorized_keys
-```
-
-## Issues
-
-If you run into any problems with this image, please check (and potentially file new) issues on the [rastasheep/ubuntu-sshd](https://github.com/rastasheep/ubuntu-sshd/issues) repo, which is the source for this image.
+If you run into any problems with this image, please check (and potentially file new) issues on the 
+[pdemanget/fedora-sshd](https://github.com/pdemanget/fedora-sshd/issues) repo, which is the source for this image.
