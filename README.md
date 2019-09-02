@@ -12,6 +12,7 @@ Image tags
 - pdemanget/fedora-sshd:27
 - pdemanget/fedora-sshd:28
 - pdemanget/fedora-sshd:29
+- pdemanget/fedora-sshd:30
 
 Docker hub help
 ---------------
@@ -32,10 +33,12 @@ docker-compose.yml:
             - "~/.ssh/id_rsa.pub:/root/.ssh/authorized_keys"
             
 to login
-
+    
+    cp ~/.ssh/id_rsa.pub authorized_keys
+    sudo chmod 0:0 authorized_keys
     ssh root@127.0.0.1 -p 10322
 
-NO password should be needed if you have binded the authorized keys to your ad_rsa.pub
+NO password should be needed if you have binded the authorized keys to your id_rsa.pub (small tricks may be needed on authorized_keys files: "chmod 600" fore example)
 
 python is also available so that we can use ansible.
 

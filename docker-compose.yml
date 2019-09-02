@@ -1,0 +1,11 @@
+# docker-compose example
+version: "3"
+services:
+  ssh1:
+    image: pdemanget/fedora-sshd
+    ports:
+      - "22001:22"
+    user: "0:0"
+    volumes:
+            - "./authorized_keys:/root/.ssh/authorized_keys:Z"
+
